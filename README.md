@@ -227,6 +227,37 @@ This codebase is intentionally modular so you can upgrade individual components:
 
 ---
 
+## 💡 A Spontaneous Idea: Contrastive VLM Training
+
+While reflecting on the current supervised fine-tuning (SFT) pipeline, an interesting direction came to mind — **what if we train the VLM with contrastive learning instead of (or in addition to) standard next-token prediction?**
+
+### The Intuition
+
+Current SFT teaches the model to "generate the correct caption," but it does not explicitly shape the **similarity structure** of the vision-language embedding space. In forgery detection, we want:
+
+- **Forged images** to cluster closely with text descriptions like "digitally tampered," "forged receipt," or "spliced composite."
+- **Authentic images** to cluster with phrases like "real photograph," "no tampering detected."
+
+A contrastive objective (e.g., inspired by **SigLIP**, **CLIP**, or **CoCa**) could explicitly pull positive `(image, text)` pairs together while pushing negatives apart in the joint embedding space.
+
+### A Tentative Recipe
+
+1. **Construct contrastive pairs** from the training set:
+   - *Positive pairs*: `(forged_image, "This image contains digital forgery.")`, `(authentic_image, "This is a real photograph.")`
+   - *Hard negatives*: `(forged_image, "This is a real photograph.")`, `(authentic_image, "This image is forged.")`
+2. **Add a contrastive head** on top of the VLM's vision and text embeddings.
+3. **Combine losses**: `L_total = L_SFT + λ * L_contrastive`, where `L_SFT` is the standard caption generation loss and `L_contrastive` is a sigmoid-based or InfoNCE-based alignment loss.
+4. **Evaluate on a held-out validation set** — compare `val_accuracy`, `AUC`, and `recall@k` between pure SFT and SFT + contrastive.
+
+### Why It Might Help
+
+- The current parser relies heavily on **keyword matching** as a fallback. If the embedding space is better structured, the VLM may produce more **consistent and deterministic** outputs even without strict formatting prompts.
+- Contrastive pre-training has shown strong results in vision-language retrieval; extending it to fine-grained forgery discrimination is a natural next step.
+
+> ⚠️ **Disclaimer**: This is an **untested hypothesis** at the time of writing. The dataset would need to be re-split into contrastive triplets, and the training script would require a custom dataloader and loss function. If you are interested, feel free to fork the repo, implement a SigLIP-style contrastive objective on top of `train_vlm.py`, and share your findings — especially whether basic classification accuracy improves over vanilla LoRA fine-tuning.
+
+---
+
 ## 📄 License
 
 MIT License.
