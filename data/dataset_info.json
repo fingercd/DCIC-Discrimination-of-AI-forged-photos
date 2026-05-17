@@ -1,0 +1,10 @@
+{
+  "vlm_train": {
+    "file_name": "vlm_train.json",
+    "formatting": "sharegpt",
+    "columns": {
+      "messages": "conversations",
+      "images": "image"
+    }
+  }
+}

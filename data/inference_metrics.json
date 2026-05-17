@@ -1,0 +1,14 @@
+{
+  "num_images": 500,
+  "num_predicted_forged": 428,
+  "num_predicted_real": 72,
+  "label_distribution": {
+    "forged": 428,
+    "real": 72
+  },
+  "total_time_seconds": 5579.19,
+  "time_per_image_seconds": 11.16,
+  "plan": "B",
+  "vlm_source": "vlm_model:C:\\Users\\Administrator\\Desktop\\DCIC\\models\\qwen3.5-9b",
+  "output_path": "C:\\Users\\Administrator\\Desktop\\DCIC\\data\\inference_results.json"
+}

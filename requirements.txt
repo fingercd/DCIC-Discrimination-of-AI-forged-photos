@@ -1,0 +1,23 @@
+# VLM fine-tuning (LLaMA-Factory typically has its own env; list core deps for local scripts)
+torch>=2.0.0
+bitsandbytes>=0.41.0
+torchvision>=0.15.0
+transformers>=4.36.0
+peft>=0.7.0
+accelerate>=0.25.0
+
+# Segmentation & masks
+segment-anything-2>=1.0.0
+segmentation-models-pytorch>=0.3.3
+pycocotools>=2.0.6
+
+# Data & images
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+pandas>=2.0.0
+
+# Utils
+tqdm>=4.65.0
+pyyaml>=6.0
+scikit-learn>=1.3.0
